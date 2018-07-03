@@ -5,23 +5,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import sectioned_recyclerview.compassites.com.ItemType.HeaderViewType;
+import sectioned_recyclerview.compassites.com.ItemType.IndividualContentViewType;
+import sectioned_recyclerview.compassites.com.ItemType.MyViewType;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-    ArrayList<String> stringArrayList;
-    ArrayList<Integer> myViewTypeArrayList;
+    //ArrayList<String> stringArrayList;
+    ArrayList<MyViewType> myViewTypeArrayList;
 
     /*void setAdapterData(ArrayList<String> stringArrayList)
     {
         this.stringArrayList = stringArrayList;
     }*/
 
-    void setAdapterData(ArrayList<Integer> myViewTypeArrayList, ArrayList<String> stringArrayList)
+    void setAdapterData(ArrayList<MyViewType> myViewTypeArrayList/*, ArrayList<String> stringArrayList*/)
     {
-        this.stringArrayList = stringArrayList;
+        //this.stringArrayList = stringArrayList;
         this.myViewTypeArrayList = myViewTypeArrayList;
     }
 
@@ -43,19 +48,50 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        if (getItemViewType(position) == MyViewType.TYPE_HEADER)
-            holder.headerTextView.setText("" +  stringArrayList.get(position));
+        if (getItemViewType(position) == MyViewType.TYPE_HEADER) {
+            //holder.headerTextView.setText("" + stringArrayList.get(position));
+
+            holder.headerTextView.setText("" + ((HeaderViewType)myViewTypeArrayList.get(position)).getHeaderName());
+            /*MyViewType myViewType = myViewTypeArrayList.get(position);
+            if (myViewType.getMyViewType() == MyViewType.TYPE_HEADER)
+                holder.headerTextView.setText("" + myViewTypeArrayList.get(position));*/
+        }
         else if (getItemViewType(position) == MyViewType.TYPE_INDIVIDUAL_CONTENT)
-            holder.contentTextView.setText("" + stringArrayList.get(position));
+            /*holder.contentTextView.setText("" + stringArrayList.get(position));*/
+            holder.contentTextView.setText("" + ((IndividualContentViewType)myViewTypeArrayList.get(position)).getIndividualContentString());
     }
 
     @Override
     public int getItemCount() {
-        return stringArrayList.size();
+        return myViewTypeArrayList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return myViewTypeArrayList.get(position);
+        return myViewTypeArrayList.get(position).getMyViewType();
     }
+
+
+    /*public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
+
+        TextView contentTextView, headerTextView;
+
+        public MyHeaderViewHolder(View itemView) {
+            super(itemView);
+
+            headerTextView = itemView.findViewById(R.id.header_text_view);
+
+        }
+    }
+
+    public class MyContentViewHolder extends RecyclerView.ViewHolder {
+
+        TextView contentTextView, headerTextView;
+
+        public MyContentViewHolder(View itemView) {
+            super(itemView);
+
+            contentTextView = itemView.findViewById(R.id.content_text_view);
+        }
+    }*/
 }
